@@ -19,6 +19,7 @@ public:
 			TrainingUnit train_u = env->reset();
 			int state = train_u.state;
 			int reward = train_u.reward;
+			int total_reward = reward;
 			bool done = train_u.done;
 			int steps = 0;
 			int action = 0;
@@ -26,7 +27,7 @@ public:
 			while(!done)
 			{
 				steps++;
-				if ((rand()%1000)*0.001 < epsilon)
+				if ((rand()%10000000)*0.0000001 < epsilon)
 					action = env->random_action();
 				else
 					action = best_action(state);
@@ -34,22 +35,25 @@ public:
 				train_u = env->step(action);
 				int new_state = train_u.new_state;
 				reward = train_u.reward;
+				total_reward += train_u.reward;
 				done = train_u.done;
 
 				// Update QTable value with Bellman equation
 				qtable[state][action] = reward + gamma * max_reward(new_state);
-
+				
 				state = new_state;
 			}
 			// The more we learn the less whe take random actions
 			epsilon -= decay * epsilon;
 
-			if (i % 50 == 0 || i >= epochs-1) {
+			//if (i % 50 == 0 || i >= epochs-1) {
 				env->render();
 				std::cout << "Epoch: " << i+1 << '/' << epochs << std::endl;
 				std::cout << "Done in " << steps << " steps." << std::endl;
+				std::cout << "Total reward: " << total_reward << std::endl;
 				std::cout << "---------------------------------" << std::endl;
-			}
+			//}
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			steps_store.push_back(steps);
 		}
 		/*
@@ -60,8 +64,8 @@ public:
 private:
 	int epochs = 1000;
 	float gamma = 0.1;
-	float epsilon = 0.8;
-	float decay = 0.01;
+	float epsilon = 0.08;
+	float decay = 0.1;
 	std::vector<std::vector<float>> qtable;
 
 	float max_reward(int state) {

@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
+#include <thread>
+
 #include "Enviroment.cpp"
 #include "Agent.cpp"
 
