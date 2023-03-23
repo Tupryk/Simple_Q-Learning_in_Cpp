@@ -56,11 +56,10 @@ public:
 
 			if (!(new_x > width-1 || new_x < 0 ||
 				new_y > height-1 || new_y < 0 || grid[new_x][new_y] == 1)) {
+				if (path[new_x][new_y] != 2) train_u.reward = 1;
 				path[pos_x][pos_y] = 2;
 				pos_x = new_x;
 				pos_y = new_y;
-			} else {
-				train_u.reward = -1;
 			}
 		}
 

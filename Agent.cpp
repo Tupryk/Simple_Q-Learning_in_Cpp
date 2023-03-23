@@ -46,13 +46,13 @@ public:
 			// The more we learn the less whe take random actions
 			epsilon -= decay * epsilon;
 
-			//if (i % 50 == 0 || i >= epochs-1) {
+			if (i % 50 == 0 || i >= epochs-1) {
 				env->render();
 				std::cout << "Epoch: " << i+1 << '/' << epochs << std::endl;
 				std::cout << "Done in " << steps << " steps." << std::endl;
 				std::cout << "Total reward: " << total_reward << std::endl;
 				std::cout << "---------------------------------" << std::endl;
-			//}
+			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			steps_store.push_back(steps);
 		}
