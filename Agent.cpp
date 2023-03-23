@@ -13,6 +13,7 @@ public:
 
 	void train(Env* env)
 	{
+		std::vector<int> steps_store;
 		for (int i = 0; i < epochs; i++)
 		{
 			TrainingUnit train_u = env->reset();
@@ -24,9 +25,6 @@ public:
 
 			while(!done)
 			{
-				std::cout << "Epoch: " << i+1 << '/' << epochs << std::endl;
-				env->render();
-
 				steps++;
 				if ((rand()%1000)*0.001 < epsilon)
 					action = env->random_action();
@@ -46,8 +44,18 @@ public:
 			// The more we learn the less whe take random actions
 			epsilon -= decay * epsilon;
 
-			std::cout << "Done in " << steps << " steps." << std::endl;
+			if (i % 50 == 0 || i >= epochs-1) {
+				env->render();
+				std::cout << "Epoch: " << i+1 << '/' << epochs << std::endl;
+				std::cout << "Done in " << steps << " steps." << std::endl;
+				std::cout << "---------------------------------" << std::endl;
+			}
+			steps_store.push_back(steps);
 		}
+		/*
+		for (auto s : steps_store)
+			std::cout << s << std::endl;
+		*/
 	}
 private:
 	int epochs = 1000;
