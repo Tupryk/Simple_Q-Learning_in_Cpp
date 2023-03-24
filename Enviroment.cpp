@@ -116,6 +116,6 @@ private:
 	int step_count = 0;
 	int max_steps = width*height;
 	int actions[action_count] = {0, 1, 2, 3};
-	float wall_chance = 0.1;
+	float wall_chance = 0.15;
 	bool done = false;
 };
